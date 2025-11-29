@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// Use localhost for desktop app since it runs on same machine as backend
 export const API = axios.create({
-    baseURL: "http://192.168.1.23:5000", // Your WiFi IP - accessible from mobile and desktop
+    baseURL: "http://localhost:5000",
 });

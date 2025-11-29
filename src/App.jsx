@@ -22,8 +22,17 @@ export default function App() {
     setLoading(true);
 
     try {
+      // Build conversation history for context
+      const conversationHistory = messages
+        .slice(-10) // Last 10 messages for context
+        .map(msg => ({
+          role: msg.sent ? 'user' : 'assistant',
+          content: msg.text
+        }));
+
       const res = await API.post("/chat", {
         message: userMessage,
+        conversationHistory
       });
 
       // Handle action commands (like open YouTube)

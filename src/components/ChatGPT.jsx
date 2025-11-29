@@ -24,11 +24,23 @@ export default function ChatGPT() {
         setInput('');
         
         // Add user message
-        setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+        const newMessages = [...messages, { role: 'user', content: userMessage }];
+        setMessages(newMessages);
         setLoading(true);
 
         try {
-            const response = await API.post('/chat', { message: userMessage });
+            // Build conversation history for context (last 10 messages)
+            const conversationHistory = newMessages
+                .slice(-10)
+                .map(msg => ({
+                    role: msg.role,
+                    content: msg.content
+                }));
+
+            const response = await API.post('/chat', { 
+                message: userMessage,
+                conversationHistory 
+            });
             
             // Handle action commands (like open YouTube)
             if (response.data.action) {
